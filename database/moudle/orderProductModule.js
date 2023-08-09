@@ -4,7 +4,7 @@ const mongoose=require('mongoose');
 let orderProductSchema = new mongoose.Schema({
     order_id:{type:String,require:true,unique:true},
     product_id:{type:String},
-    brand_id:{type:String},
+    mvo_id:{type:String},
     amount:{type:Num}
 })
 let orderProductModule = mongoose.model('orderProduct_relationship',orderProductSchema)

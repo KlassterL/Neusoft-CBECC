@@ -11,7 +11,14 @@ const router = createRouter({
                 {
                     path: '/',
                     name: 'dashboard',
+                    meta: {roles:[0,1,2]},
                     component: () => import('@/views/Dashboard.vue')
+                },
+                {
+                    path: '/manageproduct',
+                    name: 'manageproduct',
+                    meta: {roles:[1]},
+                    component: () => import('@/views/ManageProduct.vue')
                 },
                 {
                     path: '/uikit/formlayout',

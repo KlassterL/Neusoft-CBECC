@@ -7,6 +7,7 @@ const whiteList = ['/login', '/register', '/accessDenied', '/notfound'] //无需
 //全局守卫，权限检测
 router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.path)) {
+        console.log(from.path,' ',to.path);
         return next();
     }
     const use_authStore = useAuthStore();
@@ -15,15 +16,15 @@ router.beforeEach(async (to, from, next) => {
             return next({ path: '/' });
         }
         else {
-            //检查有无访问权限
-            // const hasPermission = to.meta.roles && !to.meta.roles.includes(use_authStore.user.type);
-            // if (hasPermission) {
-            //     return next();
-            // }
-            // else {
-            //     return next({name:'accessDenied'});
-            // }
-            return next();
+            // 检查有无访问权限
+            const hasPermission = (to.meta.roles && to.meta.roles.includes(use_authStore.user.type));
+            if (hasPermission) {
+                return next();
+            }
+            else {
+                return next({name:'accessDenied'});
+            }
+            // return next();
         }
     }
     else {

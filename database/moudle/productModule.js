@@ -3,11 +3,12 @@ const mongoose=require('mongoose');
 //商品schema对象
 let productSchema = new mongoose.Schema({
     id:{type:String,require:true,unique:true},
-    brand_id:{type:String},
+    mvo_id:{type:String},
     name:{type:String},
     price:{type:Num},
     category:{type:String},
-    stock:{type:Num}
+    stock:{type:Num},
+    url:{type:String}
 })
 let productModule = mongoose.model('product_info',productSchema)
 module.exports=productSchema

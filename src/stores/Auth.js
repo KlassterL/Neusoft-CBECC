@@ -7,14 +7,12 @@ export const useAuthStore = defineStore('Auth', () => {
     //用户对象
     const user = reactive({
         //用户类型（0：管理员、1：品牌商、2：借卖方）
-        type: 0,
+        type: 1,
         //用户id
         id: undefined,
         //用户名称（管理员名、品牌商名、借卖方用户名）
         name: undefined,
     });
-    //用户国家（品牌商、借卖方）
-    let country = ref();
     //品牌商（店铺）id
     let brand_id = ref();
     //借卖方（店铺）id
@@ -36,5 +34,5 @@ export const useAuthStore = defineStore('Auth', () => {
         this.isLogin = isLogin;
     }
 
-    return { isLogin, user, country, brand_id, buyer_id, role, setIsLogin };
+    return { isLogin, user, brand_id, buyer_id, role, setIsLogin };
 });

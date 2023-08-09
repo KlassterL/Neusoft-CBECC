@@ -1,5 +1,5 @@
 //本文件内实现 借卖方 的所有操作
-import production from "./production";
+import product from "./product";
 import order from "./order"
 import user from "./user";
 
@@ -23,19 +23,24 @@ function submitOrder(list) {
     return order.submitOrder(list);
 }
 
+//完成订单（直接调用订单模块）
+function finishOrder(orderId) {
+    return order.finishOrder(orderId);
+}
+
 //查看余额（直接调用用户通用模块）
 function checkBalance(id) {
     return user.checkBalance(id);
 }
 
 //预览所有商品
-function findAllProduction() {
-    return production.findAllProduction();
+function findAllProduct() {
+    return product.findAllProduct();
 }
 
 //通过关键词搜索商品
-function searchProduction(text) {
-    return production.searchProduction(text);
+function searchProduct(text) {
+    return product.searchProduct(text);
 }
 
 //在购物车中，要存储商品id以及对应的数量
@@ -59,9 +64,10 @@ export default {
     editInfo,
     findAllOrder,
     submitOrder,
-    findAllProduction,
+    finishOrder,
+    findAllProduct,
     checkBalance,
-    searchProduction,
+    searchProduct,
     addToCart,
     deleteFromCart,
     editInCart

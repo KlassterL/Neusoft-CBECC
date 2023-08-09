@@ -176,7 +176,7 @@ const client = ref([
     {
         label: '业务',
         items: [
-            { label: '商品管理', icon: 'pi pi-table' },
+            { label: '商品管理', icon: 'pi pi-table' , to: '/manageproduct'},
             { label: '订单管理', icon: 'pi pi-server' }
         ]
     },
