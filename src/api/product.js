@@ -6,19 +6,17 @@ function addProduct(data) {
 }
 
 //删除商品
-function deleteProduct(productId, brandId) {
-    //要先检查是不是品牌商所拥有的商品
+function deleteProduct(product_id) {
     //return bool
 }
 
 //修改商品信息
-function editProduct(productId, brandId, data) {
-    //要先检查是不是品牌商所拥有的商品
+function editProduct(product_id, data) {
     //return bool
 }
 
 //查看品牌商旗下所有商品
-function findAllBrandProduct(brandId) {
+function findAllBrandProduct(mvo_id) {
 //return []
 }
 
@@ -27,17 +25,10 @@ function findAllProduct() {
     //return []
 }
 
-//通过关键词搜索商品
-function searchProduct(text) {
-    //return []
-
-}
-
 export default {
     addProduct,
     editProduct,
     deleteProduct,
     findAllBrandProduct,
-    findAllProduct,
-    searchProduct
+    findAllProduct
 }

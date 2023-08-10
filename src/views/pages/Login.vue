@@ -2,7 +2,7 @@
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 // import AppConfig from '@/layout/AppConfig.vue';
-import router from '../../../router';
+import router from '../../router';
 
 const { layoutConfig } = useLayout();
 const username = ref('');
@@ -10,6 +10,7 @@ const password = ref('');
 const checked = ref(false);
 
 function login() {
+    //TODO: 调用登录接口
     router.push({path:'/'});
 }
 

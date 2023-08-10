@@ -60,17 +60,17 @@ const admin = ref([
                     {
                         label: 'Login',
                         icon: 'pi pi-fw pi-sign-in',
-                        to: '/auth/login'
+                        to: '/login'
                     },
                     {
                         label: 'Error',
                         icon: 'pi pi-fw pi-times-circle',
-                        to: '/auth/error'
+                        to: '/error'
                     },
                     {
                         label: 'Access Denied',
                         icon: 'pi pi-fw pi-lock',
-                        to: '/auth/access'
+                        to: '/accessDenied'
                     }
                 ]
             },
@@ -87,7 +87,7 @@ const admin = ref([
             {
                 label: 'Not Found',
                 icon: 'pi pi-fw pi-exclamation-circle',
-                to: '/pages/notfound'
+                to: '/notfound'
             },
             {
                 label: 'Empty',
@@ -169,15 +169,13 @@ const client = ref([
         items: [
             { label: '主页', icon: 'pi pi-home', to: '/' },
             { label: '信息设置', icon: 'pi pi-id-card', to: '/'  },
-
-            { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
         ]
     },
     {
         label: '业务',
         items: [
             { label: '商品管理', icon: 'pi pi-table' , to: '/manageproduct'},
-            { label: '订单管理', icon: 'pi pi-server' }
+            { label: '订单管理', icon: 'pi pi-server', to: '/manageorder' }
         ]
     },
     {

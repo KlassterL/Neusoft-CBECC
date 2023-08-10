@@ -1,36 +1,47 @@
 //本文件实现 订单相关操作 的代码
-//先规定订单状态：0进行中，1已完成，2已取消
 
-//查看所有订单（根据用户id查）
-function findAllOrder(id) {
+//查看所有借卖方订单（根据借卖方id查）
+function findAllBVOOrder(bvo_id) {
 //return []
 }
 
-//查看数据库里所有订单
+
+//查看所有品牌商订单（根据品牌商方id查）
+function findAllMVOOrder(mvo_id) {
+    //return []
+}
+
+//查看数据库里所有订单（管理员用）
 function findAllOrders() {
 //return []
 }
 
-//完成订单（根据订单id，把状态置为完成，同时要完成借卖方和品牌商的余额变化、更新金额变化记录表）
-function finishOrder(orderId) {
+//提交订单（生成订单id写入数据库，并设置状态为未发货0，要根据商品id查找对应品牌商id，一起写入表中）
+function submitOrder(bvo_id, product_id, amount) {
 //return bool
 }
 
-//取消订单（根据订单id，把状态置为取消）
-function cancelOrder(orderId) {
+//订单发货（把订单状态置为已发货1）
+function startOrder(order_id) {
 //return bool
 }
 
-//提交订单（传入商品数组，每种商品有一个需求数量，生成订单id写入数据库，并设置状态为0）
-//同时要将给对应品牌商的订单中添加记录
-function submitOrder(list) {
+//完成订单（根据订单id，把状态置为完成2，同时要完成借卖方和品牌商的余额变化、更新金额变化记录表）
+function finishOrder(order_id) {
+//return bool
+}
+
+//取消订单（根据订单id，把状态置为取消-1）
+function cancelOrder(order_id) {
 //return bool
 }
 
 export default {
-    findAllOrder,
+    findAllBVOOrder,
+    findAllMVOOrder,
     findAllOrders,
+    submitOrder,
+    startOrder,
     finishOrder,
-    cancelOrder,
-    submitOrder
+    cancelOrder
 }

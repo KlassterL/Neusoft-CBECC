@@ -17,14 +17,15 @@ router.beforeEach(async (to, from, next) => {
         }
         else {
             // 检查有无访问权限
-            const hasPermission = (to.meta.roles && to.meta.roles.includes(use_authStore.user.type));
-            if (hasPermission) {
-                return next();
-            }
-            else {
-                return next({name:'accessDenied'});
-            }
-            // return next();
+            // TODO: 打开权限检查
+            // const hasPermission = (to.meta.roles && to.meta.roles.includes(use_authStore.user.type));
+            // if (hasPermission) {
+            //     return next();
+            // }
+            // else {
+            //     return next({name:'accessDenied'});
+            // }
+            return next();
         }
     }
     else {
