@@ -3,9 +3,11 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import CustomerService from '@/service/CustomerService';
 import { useAuthStore } from '@/stores/Auth';
 import { ref, onBeforeMount } from 'vue';
-import mvoAPI from '@/api/mvo'
+import mvoAPI from '@/api/mvo';
+import bvoAPI from '@/api/bvo';
 
 const user_authStore = useAuthStore();
+const orders = ref(null);
 const customer = ref(null);
 const filters = ref(null);
 const loading = ref(null);
@@ -15,7 +17,19 @@ const severity = ref(['warning', 'primary', 'success', 'danger']);
 const customerService = new CustomerService();
 
 onBeforeMount(() => {
-    //TODO: 加载时调用后端服务，拉取对应的订单列表
+    //加载时调用后端服务，拉取对应的订单列表
+    if (user_authStore.type === 1) {
+        mvoAPI.findAllMVOOrder(user_authStore.mvo_id).then((data) => {
+            orders.value = data;
+            loading.value = false;
+        });
+    }
+    else {
+        bvoAPI.findAllBVOOrder(user_authStore.bvo_id).then((data) => {
+            orders.value = data;
+            loading.value = false;
+        });
+    }
     customerService.getCustomersLarge().then((data) => {
         customer.value = data;
         loading.value = false;
@@ -79,15 +93,13 @@ const cancelOrder = (order_id) => {
         <div class="col-12">
             <div class="card">
                 <DataTable
-                    :value="customer"
+                    :value="orders"
                     :paginator="true"
                     class="p-datatable-gridlines"
                     :rows="10"
                     dataKey="id"
-                    v-model:filters="filters"
                     filterDisplay="menu"
                     :loading="loading"
-                    :filters="filters"
                     responsiveLayout="scroll"
                     :globalFilterFields="['order_id', 'product_name']"
                 >
@@ -108,24 +120,24 @@ const cancelOrder = (order_id) => {
                             #{{ data.order_id }}
                         </template>
                     </Column>
-                    <Column field="time" header="时间" dataType="date" style="min-width: 6rem">
+                    <Column field="time" header="时间" style="min-width: 6rem">
                         <template #body="{ data }">
-                            {{ formatDate(data.date) }}
+                            {{ formatDate(data.time) }}
                         </template>
                     </Column>
-                    <Column field="product_name" header="订购商品" style="min-width: 10rem">
+                    <Column field="name" header="订购商品" style="min-width: 10rem">
                         <template #body="{ data }">
-                            {{ data.product_name }}
+                            {{ data.name }}
                         </template>
                     </Column>
-                    <Column field="image_url" header="商品图片" style="width:20%; min-width:10rem">
+                    <Column field="image_url" header="商品图片" style="max-width: 20rem; min-width:10rem">
                         <template #body="{ data }">
                             <img :src="data.image_url" :alt="data.image_url" class="shadow-2" width="100" />
                         </template>
                     </Column>
-                    <Column field="product_amount" header="订购数量" style="min-width:8rem">
+                    <Column field="amount" header="订购数量" style="min-width:8rem">
                         <template #body="{ data }">
-                            <img :src="data.amount" :alt="data.amount" />
+                            {{ data.amount }}
                         </template>
                     </Column>
                     <Column field="status" header="订单状态" style="min-width:5rem">
@@ -134,10 +146,10 @@ const cancelOrder = (order_id) => {
                         </template>
                     </Column>
                     <Column header="操作" headerStyle="min-width:10rem;">
-                        <template #body="data">
-                            <Button v-if="user_authStore.type===0" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data.order_id)" />
-                            <Button v-if="user_authStore.type===1" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data.order_id)" />
-                            <Button v-if="user_authStore.type===1" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data.order_id)" />
+                        <template #body="{ data }">
+                            <Button v-if="user_authStore.type===1" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data.order_id)" />
+                            <Button v-if="user_authStore.type===2" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data.order_id)" />
+                            <Button v-if="user_authStore.type===2" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data.order_id)" />
                         </template>
                     </Column>
                 </DataTable>
