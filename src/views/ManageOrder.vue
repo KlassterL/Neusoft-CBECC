@@ -12,8 +12,8 @@ const orders = ref(null);
 const customer = ref(null);
 const filters = ref(null);
 const loading = ref(null);
-const product_statuses = ref(['待发货', '已发货', '完成', '已取消']);
-const severity = ref(['warning', 'primary', 'success', 'danger']);
+const product_statuses = ref(['待发货','已发货', '完成', '已取消']);
+const severity = ref(['warning','primary', 'success', 'danger']);
 
 const customerService = new CustomerService();
 
@@ -39,14 +39,14 @@ onBeforeMount(() => {
 const initFilters = () => {
     filters.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        'country.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        representative: { value: null, matchMode: FilterMatchMode.IN },
-        date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-        balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-        status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-        activity: { value: [0, 50], matchMode: FilterMatchMode.BETWEEN },
-        verified: { value: null, matchMode: FilterMatchMode.EQUALS }
+        // name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        // 'country.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        // representative: { value: null, matchMode: FilterMatchMode.IN },
+        // date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
+        // balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+        // status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+        // activity: { value: [0, 50], matchMode: FilterMatchMode.BETWEEN },
+        // verified: { value: null, matchMode: FilterMatchMode.EQUALS }
     };
 };
 
@@ -75,17 +75,27 @@ const startOrder = (data) => {
         data.status = 1;
         toast.success('发货成功','已将订单状态设置为已发货~');
     } else {
-        toast.error('发货失败','请稍后重试...');
+        toast.error('操作失败','请稍后重试...');
     }
 }
 
 const finishOrder = (data) => {
-    mvoAPI.finishOrder(data.order_id)
+    if(bvoAPI.finishOrder(data.order_id)) {
+        data.status = 2;
+        toast.success('订单完成','已将订单状态设置为已完成~');
+    } else {
+        toast.error('操作失败','请稍后重试...');
+    }
 }
 
 
 const cancelOrder = (data) => {
-    mvoAPI.cancelOrder(data.order_id)
+    if(bvoAPI.cancelOrder(data.order_id)) {
+        data.status = 3;
+        toast.success('订单取消','已将订单状态设置为已取消~');
+    } else {
+        toast.error('操作失败','请稍后重试...');
+    }
 }
 
 </script>
@@ -100,6 +110,8 @@ const cancelOrder = (data) => {
                     class="p-datatable-gridlines"
                     :rows="10"
                     dataKey="id"
+                    v-model:filters="filters"
+                    :filters="filters"
                     filterDisplay="menu"
                     :loading="loading"
                     responsiveLayout="scroll"
@@ -150,8 +162,8 @@ const cancelOrder = (data) => {
                     <Column header="操作" headerStyle="min-width:10rem;">
                         <template #body="{ data }">
                             <Button v-if="authStore.type===1" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data)" />
-                            <Button v-if="authStore.type===2" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data)" />
-                            <Button v-if="authStore.type===2" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data)" />
+                            <Button v-if="authStore.type===1" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data)" />
+                            <Button v-if="authStore.type===1" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data)" />
                         </template>
                     </Column>
                 </DataTable>

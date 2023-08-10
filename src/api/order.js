@@ -33,7 +33,6 @@ function submitOrder(bvo_id, product_id, amount) {
 function startOrder(order_id) {
     const order = orders.find(e => e.order_id === order_id);
     if(order) {
-        order.status = 1;
         return true;
     }
     return false;
@@ -42,11 +41,13 @@ function startOrder(order_id) {
 
 //完成订单（根据订单id，把状态置为完成2，同时要完成借卖方和品牌商的余额变化、更新金额变化记录表）
 function finishOrder(order_id) {
+    return true;
     //return bool
 }
 
-//取消订单（根据订单id，把状态置为取消-1）
+//取消订单（根据订单id，把状态置为取消3）
 function cancelOrder(order_id) {
+    return true;
     //return bool
 }
 

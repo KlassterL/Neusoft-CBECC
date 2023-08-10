@@ -28,6 +28,12 @@ function finishOrder(order_id) {
     return order.finishOrder(order_id);
 }
 
+
+//完成订单（直接调用订单模块）
+function cancelOrder(order_id) {
+    return order.cancelOrder(order_id);
+}
+
 //查看余额（直接调用用户通用模块）
 function checkBalance(user_id) {
     return user.checkBalance(user_id);
@@ -64,6 +70,7 @@ export default {
     findAllBVOOrder,
     submitOrder,
     finishOrder,
+    cancelOrder,
     findAllProduct,
     checkBalance,
     findAllBalanceRecord,
