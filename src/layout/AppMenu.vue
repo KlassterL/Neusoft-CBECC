@@ -188,7 +188,7 @@ const client = ref([
 
 let menu = computed(()=>{
     const use_authStore = useAuthStore();
-    if(use_authStore.user.type === 0) {
+    if(use_authStore.type === 0) {
         return admin;
     }
     else {

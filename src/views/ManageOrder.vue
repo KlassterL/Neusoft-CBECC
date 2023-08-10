@@ -1,9 +1,11 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import CustomerService from '@/service/CustomerService';
-import ProductService from '@/service/ProductService';
+import { useAuthStore } from '@/stores/Auth';
 import { ref, onBeforeMount } from 'vue';
+import mvoAPI from '@/api/mvo'
 
+const user_authStore = useAuthStore();
 const customer = ref(null);
 const filters = ref(null);
 const loading = ref(null);
@@ -57,6 +59,19 @@ const getProductStatus= (code) => {
     return product_statuses.value[code];
 };
 
+const startOrder = (order_id) => {
+    mvoAPI.startOrder(order_id);
+}
+
+const finishOrder = (order_id) => {
+    mvoAPI.finishOrder(order_id)
+}
+
+
+const cancelOrder = (order_id) => {
+    mvoAPI.cancelOrder(order_id)
+}
+
 </script>
 
 <template>
@@ -74,7 +89,7 @@ const getProductStatus= (code) => {
                     :loading="loading"
                     :filters="filters"
                     responsiveLayout="scroll"
-                    :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
+                    :globalFilterFields="['order_id', 'product_name']"
                 >
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -119,9 +134,10 @@ const getProductStatus= (code) => {
                         </template>
                     </Column>
                     <Column header="操作" headerStyle="min-width:10rem;">
-                        <template #body="slotProps">
-                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
-                            <Button icon="pi pi-trash" severity="danger" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data)" />
+                        <template #body="data">
+                            <Button v-if="user_authStore.type===0" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data.order_id)" />
+                            <Button v-if="user_authStore.type===1" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data.order_id)" />
+                            <Button v-if="user_authStore.type===1" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data.order_id)" />
                         </template>
                     </Column>
                 </DataTable>
