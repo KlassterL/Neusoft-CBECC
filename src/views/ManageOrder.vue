@@ -5,8 +5,9 @@ import { useAuthStore } from '@/stores/Auth';
 import { ref, onBeforeMount } from 'vue';
 import mvoAPI from '@/api/mvo';
 import bvoAPI from '@/api/bvo';
+import toast from '@/util/toast'
 
-const user_authStore = useAuthStore();
+const authStore = useAuthStore();
 const orders = ref(null);
 const customer = ref(null);
 const filters = ref(null);
@@ -18,17 +19,13 @@ const customerService = new CustomerService();
 
 onBeforeMount(() => {
     //加载时调用后端服务，拉取对应的订单列表
-    if (user_authStore.type === 1) {
-        mvoAPI.findAllMVOOrder(user_authStore.mvo_id).then((data) => {
-            orders.value = data;
-            loading.value = false;
-        });
+    if (authStore.type === 1) {
+        orders.value = mvoAPI.findAllMVOOrder(authStore.mvo_id);
+        loading.value = false;
     }
     else {
-        bvoAPI.findAllBVOOrder(user_authStore.bvo_id).then((data) => {
-            orders.value = data;
-            loading.value = false;
-        });
+        bvoAPI.findAllBVOOrder(authStore.bvo_id);
+        loading.value = false;
     }
     customerService.getCustomersLarge().then((data) => {
         customer.value = data;
@@ -73,17 +70,22 @@ const getProductStatus= (code) => {
     return product_statuses.value[code];
 };
 
-const startOrder = (order_id) => {
-    mvoAPI.startOrder(order_id);
+const startOrder = (data) => {
+    if(mvoAPI.startOrder(data.order_id)) {
+        data.status = 1;
+        toast.success('发货成功','已将订单状态设置为已发货~');
+    } else {
+        toast.error('发货失败','请稍后重试...');
+    }
 }
 
-const finishOrder = (order_id) => {
-    mvoAPI.finishOrder(order_id)
+const finishOrder = (data) => {
+    mvoAPI.finishOrder(data.order_id)
 }
 
 
-const cancelOrder = (order_id) => {
-    mvoAPI.cancelOrder(order_id)
+const cancelOrder = (data) => {
+    mvoAPI.cancelOrder(data.order_id)
 }
 
 </script>
@@ -147,9 +149,9 @@ const cancelOrder = (order_id) => {
                     </Column>
                     <Column header="操作" headerStyle="min-width:10rem;">
                         <template #body="{ data }">
-                            <Button v-if="user_authStore.type===1" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data.order_id)" />
-                            <Button v-if="user_authStore.type===2" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data.order_id)" />
-                            <Button v-if="user_authStore.type===2" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data.order_id)" />
+                            <Button v-if="authStore.type===1" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data)" />
+                            <Button v-if="authStore.type===2" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data)" />
+                            <Button v-if="authStore.type===2" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data)" />
                         </template>
                     </Column>
                 </DataTable>
