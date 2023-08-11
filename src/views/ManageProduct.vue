@@ -159,7 +159,7 @@ const initFilters = () => {
                     <Column header="图片" headerStyle="width:20%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Image</span>
-                            <img :src="slotProps.data.image_url" :alt="slotProps.data.image" class="shadow-2" width="100" />
+                            <img :src="slotProps.data.image_url" :alt="slotProps.data.name" class="shadow-2" width="100" />
                         </template>
                     </Column>
                     <Column field="price" header="价格" :sortable="true" headerStyle="width:20%; min-width:8rem;">

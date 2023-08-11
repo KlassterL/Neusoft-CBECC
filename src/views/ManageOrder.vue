@@ -55,14 +55,6 @@ const clearFilter = () => {
     initFilters();
 };
 
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
-
 const getSeverity= (code) => {
     return severity.value[code];
 };
@@ -147,7 +139,7 @@ const cancelOrder = (data) => {
                     </Column>
                     <Column field="image_url" header="商品图片" style="max-width: 20rem; min-width:10rem">
                         <template #body="{ data }">
-                            <img :src="data.image_url" :alt="data.image_url" class="shadow-2" width="100" />
+                            <img :src="data.image_url" :alt="data.name" class="shadow-2" width="100" />
                         </template>
                     </Column>
                     <Column field="amount" header="订购数量" style="min-width:8rem">

@@ -8,6 +8,7 @@ const router = createRouter({
             path: '/',
             component: AppLayout,
             children: [
+                //TODO: 权限修改
                 {
                     path: '/',
                     name: 'dashboard',
@@ -25,6 +26,12 @@ const router = createRouter({
                     name: 'manageorder',
                     meta: {roles:[0,1,2]},
                     component: () => import('@/views/ManageOrder.vue')
+                },
+                {
+                    path: '/browseproduct',
+                    name: 'browseproduct',
+                    meta: {roles:[0,1,2]},
+                    component: () => import('@/views/BrowseProduct.vue')
                 },
                 {
                     path: '/uikit/formlayout',
