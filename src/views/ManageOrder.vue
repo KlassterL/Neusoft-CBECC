@@ -6,6 +6,7 @@ import { ref, onBeforeMount } from 'vue';
 import mvoAPI from '@/api/mvo';
 import bvoAPI from '@/api/bvo';
 import toast from '@/util/toast'
+import { format } from 'date-fns';
 
 const authStore = useAuthStore();
 const orders = ref(null);
@@ -82,7 +83,7 @@ const startOrder = (data) => {
 const finishOrder = (data) => {
     if(bvoAPI.finishOrder(data.order_id)) {
         data.status = 2;
-        toast.success('订单完成','已将订单状态设置为已完成~');
+        toast.success('支付成功','订单已完成~');
     } else {
         toast.error('操作失败','请稍后重试...');
     }
@@ -92,7 +93,7 @@ const finishOrder = (data) => {
 const cancelOrder = (data) => {
     if(bvoAPI.cancelOrder(data.order_id)) {
         data.status = 3;
-        toast.success('订单取消','已将订单状态设置为已取消~');
+        toast.success('取消成功','订单已取消~');
     } else {
         toast.error('操作失败','请稍后重试...');
     }
@@ -134,14 +135,14 @@ const cancelOrder = (data) => {
                             #{{ data.order_id }}
                         </template>
                     </Column>
-                    <Column field="time" header="时间" style="min-width: 6rem">
+                    <Column field="time" header="时间" style="max-width: 7rem">
                         <template #body="{ data }">
-                            {{ formatDate(data.time) }}
+                            <div class="text-center">{{ format(data.time, 'yyyy-MM-dd HH:mm:ss') }}</div>
                         </template>
                     </Column>
                     <Column field="name" header="订购商品" style="min-width: 10rem">
                         <template #body="{ data }">
-                            {{ data.name }}
+                            <div class="text-center">{{ data.name }}</div>
                         </template>
                     </Column>
                     <Column field="image_url" header="商品图片" style="max-width: 20rem; min-width:10rem">
@@ -151,10 +152,10 @@ const cancelOrder = (data) => {
                     </Column>
                     <Column field="amount" header="订购数量" style="min-width:8rem">
                         <template #body="{ data }">
-                            {{ data.amount }}
+                            <div class="text-center">{{ data.amount }}</div>
                         </template>
                     </Column>
-                    <Column field="status" header="订单状态" style="min-width:5rem">
+                    <Column field="status" header="订单状态" style="min-width:7rem;">
                         <template #body="{ data }">
                             <Tag :value="getProductStatus(data.status)" :severity="getSeverity(data.status)" />
                         </template>
@@ -162,8 +163,8 @@ const cancelOrder = (data) => {
                     <Column header="操作" headerStyle="min-width:10rem;">
                         <template #body="{ data }">
                             <Button v-if="authStore.type===1" :disabled="data.status!==0" icon="pi pi-truck" class="mr-2" label="发货" @click="startOrder(data)" />
-                            <Button v-if="authStore.type===1" :disabled="data.status!==1" icon="pi pi-check" class="mr-2" severity="success" label="完成" @click="finishOrder(data)" />
-                            <Button v-if="authStore.type===1" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data)" />
+                            <Button v-if="authStore.type===2" :disabled="data.status!==1" icon="pi pi-check-square" class="mr-2" severity="success" label="支付" @click="finishOrder(data)" />
+                            <Button v-if="authStore.type===2" :disabled="data.status!==0" icon="pi pi-times" class="mr-2" severity="danger" label="取消" @click="cancelOrder(data)" />
                         </template>
                     </Column>
                 </DataTable>

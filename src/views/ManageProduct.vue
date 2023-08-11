@@ -1,10 +1,11 @@
 <script setup>
 import { FilterMatchMode } from 'primevue/api';
 import { ref, onMounted, onBeforeMount } from 'vue';
-import ProductService from '@/service/ProductService';
-import { useToast } from 'primevue/usetoast';
+import toast from '@/util/toast'
+import mvoAPI from '@/api/mvo';
+import { useAuthStore } from '@/stores/Auth';
 
-const toast = useToast();
+const authStore = useAuthStore();
 
 const products = ref(null);
 const productDialog = ref(false);
@@ -12,24 +13,19 @@ const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
 const product = ref({});
 const selectedProducts = ref(null);
-const dt = ref(null);
 const filters = ref({});
 const submitted = ref(false);
-
-const productService = new ProductService();
 
 onBeforeMount(() => {
     initFilters();
 });
 
 onMounted(() => {
-    //TODO: 页面加载时，根据品牌商id向数据库申请商品信息
-    //mvoService.findAllBrandProduct(brand_id).then((data) => (products.value = data));
-    productService.getProducts().then((data) => (products.value = data));
+    products.value = mvoAPI.findAllBrandProduct(authStore.mvo_id);
 });
 
 const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    return value.toLocaleString('zh', { style: 'currency', currency: 'CNY' });
 };
 
 const openNew = () => {
@@ -47,19 +43,21 @@ const saveProduct = () => {
     submitted.value = true;
     if (product.value.name && product.value.name.trim() && product.value.price) {
         if (product.value.id) {
-            // TODO: 先向服务端申请，再修改信息内容
-            product.value.inventoryStatus = product.value.inventoryStatus.value ? product.value.inventoryStatus.value : product.value.inventoryStatus;
-            products.value[findIndexById(product.value.id)] = product.value;
-            toast.add({ severity: 'success', summary: '保存成功', detail: '商品信息已更新', life: 3000 });
+            if(mvoAPI.editProduct(product.value.product_id, product.value)) {
+                products.value[findIndexById(product.value.product_id)] = product.value;
+                toast.success('保存成功','商品信息已更新');
+            }
+            else {
+                toast.error('保存失败','请稍后重试...');
+            }
         } else {
-            // TODO: 修改id的生成方式，由后端生成...
-            product.value.id = createId();
-            product.value.code = createId();
-            product.value.image = 'product-placeholder.svg';
-            // TODO: 获取后端返回的id后，再添加到显示列表
-            product.value.inventoryStatus = product.value.inventoryStatus ? product.value.inventoryStatus.value : 'INSTOCK';
-            products.value.push(product.value);
-            toast.add({ severity: 'success', summary: '保存成功', detail: '已添加新的商品信息', life: 3000 });
+            if(mvoAPI.addProduct(product.value)) {
+                products.value.push(product.value);
+                toast.success('添加成功','已添加新的商品信息');
+            }
+            else {
+                toast.error('添加失败','请稍后重试...');
+            }
         }
         productDialog.value = false;
         product.value = {};
@@ -78,11 +76,16 @@ const confirmDeleteProduct = (editProduct) => {
 };
 
 const deleteProduct = () => {
-    //TODO: 先向后端申请，再进行内容刷新
-    products.value = products.value.filter((val) => val.id !== product.value.id);
+    if(mvoAPI.deleteProduct(product.value.product_id)) {
+        products.value = products.value.filter((val) => val.product_id !== product.value.product_id);
+        toast.success('删除成功','已成功删除 '+product.value.name+' 的商品信息');
+    }
+    else {
+        toast.error('删除失败','请稍后重试...');
+
+    }
     deleteProductDialog.value = false;
     product.value = {};
-    toast.add({ severity: 'success', summary: '删除成功', detail: '商品信息已删除', life: 3000 });
 };
 
 const findIndexById = (id) => {
@@ -96,25 +99,16 @@ const findIndexById = (id) => {
     return index;
 };
 
-// TODO: 删除生成ID方法
-const createId = () => {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-};
-
 const confirmDeleteSelected = () => {
     deleteProductsDialog.value = true;
 };
 const deleteSelectedProducts = () => {
-    //TODO: 先向后端申请，再进行内容刷新
-    products.value = products.value.filter((val) => !selectedProducts.value.includes(val));
+    selectedProducts.value.forEach(e => {
+        product.value = e;
+        deleteProduct();
+    })
     deleteProductsDialog.value = false;
     selectedProducts.value = null;
-    toast.add({ severity: 'success', summary: '批量删除成功', detail: '选中商品的信息已删除', life: 3000 });
 };
 
 const initFilters = () => {
@@ -129,14 +123,12 @@ const initFilters = () => {
         <div class="col-12">
             <div class="card">
                 <DataTable
-                    ref="dt"
                     :value="products"
                     v-model:selection="selectedProducts"
                     dataKey="id"
                     :paginator="true"
                     :rows="10"
                     :filters="filters"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5, 10, 25]"
                     currentPageReportTemplate=""
                     responsiveLayout="scroll"
@@ -154,6 +146,7 @@ const initFilters = () => {
                             </div>
                         </div>
                     </template>
+                    <template #empty> <div class="text-center text-xl">暂无旗下商品信息</div> </template>
 
                     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
                     
@@ -166,7 +159,7 @@ const initFilters = () => {
                     <Column header="图片" headerStyle="width:20%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Image</span>
-                            <img :src="'demo/images/product/' + slotProps.data.image" :alt="slotProps.data.image" class="shadow-2" width="100" />
+                            <img :src="slotProps.data.image_url" :alt="slotProps.data.image" class="shadow-2" width="100" />
                         </template>
                     </Column>
                     <Column field="price" header="价格" :sortable="true" headerStyle="width:20%; min-width:8rem;">
@@ -190,7 +183,7 @@ const initFilters = () => {
                 </DataTable>
 
                 <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="商品详情" :modal="true" class="p-fluid">
-                    <img :src="'demo/images/product/' + product.image" :alt="product.image" v-if="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
+                    <img :src="product.image_url" v-if="product.image_url" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
                     <div class="field">
                         <label for="name">商品名称</label>
                         <InputText id="name" v-model.trim="product.name" required="true" autofocus :class="{ 'p-invalid': submitted && !product.name }" />
@@ -198,7 +191,7 @@ const initFilters = () => {
                     </div>
                     <div class="field">
                         <label for="image">图片URL路径</label>
-                        <InputText id="image" v-model.trim="product.image" required="true" />
+                        <InputText id="image" v-model.trim="product.image_url" required="true" />
                     </div>
                     <div class="field">
                         <label for="description">商品描述</label>
@@ -214,12 +207,12 @@ const initFilters = () => {
                     <div class="formgrid grid">
                         <div class="field col">
                             <label for="price">商品价格</label>
-                            <InputNumber id="price" v-model="product.price" mode="currency" currency="USD" locale="en-US" :class="{ 'p-invalid': submitted && !product.price }" :required="true" />
+                            <InputNumber id="price" v-model="product.price" mode="currency" currency="CNY" locale="zh" :class="{ 'p-invalid': submitted && !product.price }" :required="true" />
                             <small class="p-error" v-if="submitted && !product.price">必须填写商品价格</small>
                         </div>
                         <div class="field col">
                             <label for="quantity">库存数量</label>
-                            <InputNumber id="quantity" v-model="product.quantity" integeronly />
+                            <InputNumber id="quantity" v-model="product.stock" integeronly />
                         </div>
                     </div>
                     <template #footer>
@@ -245,7 +238,7 @@ const initFilters = () => {
                 <Dialog v-model:visible="deleteProductsDialog" :style="{ width: '450px' }" header="批量删除" :modal="true">
                     <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                        <span v-if="product">确认删除选中的商品？</span>
+                        <span v-if="product">确认删除选中的 {{ selectedProducts.length }} 件商品？</span>
                     </div>
                     <template #footer>
                         <Button label="取消" icon="pi pi-times" class="p-button-text" @click="deleteProductsDialog = false" />
