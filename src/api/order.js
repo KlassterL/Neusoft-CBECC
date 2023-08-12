@@ -26,6 +26,7 @@ function findAllOrders() {
 
 //提交订单（生成订单id写入数据库，并设置状态为未发货0，要根据商品id查找对应品牌商id，一起写入表中）
 function submitOrder(bvo_id, product_id, amount) {
+    return true;
     //return bool
 }
 

@@ -138,13 +138,15 @@ const initFilters = () => {
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h3 class="m-0">商品管理</h3>
-                            <span class="block mt-2 md:mt-0 p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['name'].value" placeholder="搜索商品..." />
-                            </span>
-                            <div class="my-2">
-                                <Button label="添加商品" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
-                                <Button label="批量删除" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+                            <div>
+                                <span class="my-2">
+                                    <Button icon="pi pi-plus" severity="success" class="mr-3" @click="openNew" />
+                                    <Button icon="pi pi-trash" severity="danger" class="mr-3" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+                                </span>
+                                <span class="mt-2 md:mt-0 p-input-icon-left">
+                                    <i class="pi pi-search" />
+                                    <InputText v-model="filters['name'].value" placeholder="搜索商品..." />
+                                </span>
                             </div>
                         </div>
                     </template>

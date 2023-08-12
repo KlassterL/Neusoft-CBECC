@@ -69,6 +69,7 @@ function addToCart(bvo_id, product_id, amount) {
 
 //将商品从购物车删除
 function deleteFromCart(bvo_id, product_id) {
+    return true;
 //return bool
 }
 

@@ -24,14 +24,20 @@ const router = createRouter({
                 {
                     path: '/manageorder',
                     name: 'manageorder',
-                    meta: {roles:[0,1,2]},
+                    meta: {roles:[1,2]},
                     component: () => import('@/views/ManageOrder.vue')
                 },
                 {
                     path: '/browseproduct',
                     name: 'browseproduct',
-                    meta: {roles:[0,1,2]},
+                    meta: {roles:[2]},
                     component: () => import('@/views/BrowseProduct.vue')
+                },
+                {
+                    path: '/cart',
+                    name: 'cart',
+                    meta: {roles:[2]},
+                    component: () => import('@/views/Cart.vue')
                 },
                 {
                     path: '/uikit/formlayout',

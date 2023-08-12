@@ -176,7 +176,8 @@ const client = ref([
         items: [
             { label: '商品管理', icon: 'pi pi-table' , to: '/manageproduct'},
             { label: '订单管理', icon: 'pi pi-server', to: '/manageorder' },
-            { label: '借卖商城', icon: 'pi pi-cart-plus', to: '/browseproduct' }
+            { label: '借卖商城', icon: 'pi pi-cart-plus', to: '/browseproduct' },
+            { label: '购物车', icon: 'pi pi-shopping-cart', to: '/cart' }
         ]
     },
     {
