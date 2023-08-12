@@ -12,6 +12,8 @@ function findInfo(user_id) {
 
 //修改账号信息
 function editInfo(user_id, data) {
+    console.log(user_id, data);
+    return true;
 //return bool
 }
 

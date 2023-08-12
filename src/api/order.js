@@ -9,6 +9,7 @@ const orders = [
 
 //查看所有借卖方订单（根据借卖方id查）
 function findAllBVOOrder(bvo_id) {
+    return orders;
     //return []
 }
 

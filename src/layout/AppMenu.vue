@@ -168,7 +168,7 @@ const client = ref([
         label: '我的',
         items: [
             { label: '主页', icon: 'pi pi-home', to: '/' },
-            { label: '信息设置', icon: 'pi pi-id-card', to: '/'  },
+            { label: '信息设置', icon: 'pi pi-id-card', to: '/info'  },
         ]
     },
     {

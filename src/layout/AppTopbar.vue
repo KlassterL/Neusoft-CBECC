@@ -1,13 +1,10 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useLayout } from '@/layout/composables/layout';
-import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/Auth';
 
-const { layoutConfig, onMenuToggle } = useLayout();
-
+const authStore = useAuthStore();
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
-const router = useRouter();
 
 onMounted(() => {
     bindOutsideClickListener();
@@ -25,10 +22,7 @@ const logoUrl = computed(() => {
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
 };
-const onSettingsClick = () => {
-    topbarMenuActive.value = false;
-    router.push('/documentation');
-};
+
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -77,9 +71,9 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-user"></i>
-                <span>Profile</span>
+            <button @click="onTopBarMenuButton()" class="layout-topbar-button border-2 border-primary" style="width: 4rem; height: 4rem;">
+                <i v-if="!authStore.avatar_url" class="pi pi-user"></i>
+                <img v-if="authStore.avatar_url" :src="authStore.avatar_url" >
             </button>
         </div>
     </div>

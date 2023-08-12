@@ -11,9 +11,9 @@ const router = createRouter({
                 //TODO: 权限修改
                 {
                     path: '/',
-                    name: 'dashboard',
-                    meta: {roles:[0,1,2]},
-                    component: () => import('@/views/Dashboard.vue')
+                    name: 'home',
+                    meta: {roles:[1,2]},
+                    component: () => import('@/views/Home.vue')
                 },
                 {
                     path: '/manageproduct',
@@ -38,6 +38,12 @@ const router = createRouter({
                     name: 'cart',
                     meta: {roles:[2]},
                     component: () => import('@/views/Cart.vue')
+                },
+                {
+                    path: '/info',
+                    name: 'info',
+                    meta: {roles:[0,1,2]},
+                    component: () => import('@/views/Info.vue')
                 },
                 {
                     path: '/uikit/formlayout',

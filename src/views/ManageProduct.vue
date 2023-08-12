@@ -154,24 +154,29 @@ const initFilters = () => {
 
                     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
                     
-                    <Column field="name" header="名称" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                    <Column field="name" header="名称" headerStyle="min-width:12rem;">
                         <template #body="slotProps">
                             {{ slotProps.data.name }}
                         </template>
                     </Column>
-                    <Column header="图片" headerStyle="width:20%; min-width:10rem;">
+                    <Column header="图片" headerStyle="min-width:12rem;">
                         <template #body="slotProps">
                             <img :src="slotProps.data.image_url" :alt="slotProps.data.name" class="shadow-2" width="100" />
                         </template>
                     </Column>
-                    <Column field="price" header="价格" :sortable="true" headerStyle="width:20%; min-width:8rem;">
+                    <Column field="price" header="价格" :sortable="true" headerStyle="min-width:8rem;">
                         <template #body="slotProps">
                             <span>{{ formatCurrency(slotProps.data.price) }}</span>
                         </template>
                     </Column>
-                    <Column field="category" header="类别" headerStyle="min-width:10rem;">
+                    <Column field="category" header="类别" headerStyle="min-width:8rem;">
                         <template #body="slotProps">
                             {{ slotProps.data.category }}
+                        </template>
+                    </Column>
+                    <Column field="stock" header="库存" sortable headerStyle="min-width:8rem;">
+                        <template #body="slotProps">
+                            {{ slotProps.data.stock }}
                         </template>
                     </Column>
                     <Column header="操作" headerStyle="min-width:10rem;">

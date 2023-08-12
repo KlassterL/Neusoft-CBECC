@@ -4,7 +4,6 @@ import { ref, onMounted, onBeforeMount } from 'vue';
 import toast from '@/util/toast'
 import bvoAPI from '@/api/bvo';
 import { useAuthStore } from '@/stores/Auth';
-import { tr } from 'date-fns/locale';
 
 const authStore = useAuthStore();
 
