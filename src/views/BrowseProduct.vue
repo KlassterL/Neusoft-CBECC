@@ -117,7 +117,7 @@ const stockSeverity = (stock) => {
                                 </div>
                                 <div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
                                     <span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">￥{{ slotProps.data.price }}</span>
-                                    <Button icon="pi pi-shopping-cart" label="添加购物车" :disabled="slotProps.data.inCart"  @click="addToCart(slotProps.data)"></Button>
+                                    <Button v-if="authStore.type===2" icon="pi pi-shopping-cart" label="添加购物车" :disabled="slotProps.data.inCart"  @click="addToCart(slotProps.data)"></Button>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@ const stockSeverity = (stock) => {
                                 </div>
                                 <div class="flex align-items-center justify-content-between">
                                     <span class="text-2xl font-semibold">￥{{ slotProps.data.price }}</span>
-                                    <Button icon="pi pi-shopping-cart" :disabled="slotProps.data.inCart" @click="addToCart(slotProps.data)"></Button>
+                                    <Button v-if="authStore.type===2" icon="pi pi-shopping-cart" :disabled="slotProps.data.inCart" @click="addToCart(slotProps.data)"></Button>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,5 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import CustomerService from '@/service/CustomerService';
 import { useAuthStore } from '@/stores/Auth';
 import { ref, onBeforeMount } from 'vue';
 import mvoAPI from '@/api/mvo';
@@ -10,13 +9,10 @@ import { format } from 'date-fns';
 
 const authStore = useAuthStore();
 const orders = ref(null);
-const customer = ref(null);
 const filters = ref(null);
 const loading = ref(null);
 const product_statuses = ref(['待发货','已发货', '完成', '已取消']);
 const severity = ref(['warning','primary', 'success', 'danger']);
-
-const customerService = new CustomerService();
 
 onBeforeMount(() => {
     //加载时调用后端服务，拉取对应的订单列表
@@ -25,14 +21,9 @@ onBeforeMount(() => {
         loading.value = false;
     }
     else {
-        bvoAPI.findAllBVOOrder(authStore.bvo_id);
+        orders.value = bvoAPI.findAllBVOOrder(authStore.bvo_id);
         loading.value = false;
     }
-    customerService.getCustomersLarge().then((data) => {
-        customer.value = data;
-        loading.value = false;
-        customer.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
 
     initFilters();
 });

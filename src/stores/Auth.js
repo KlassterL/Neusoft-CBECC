@@ -1,24 +1,22 @@
 import { defineStore } from 'pinia';
-import { ref, reactive, computed } from 'vue';
+import { ref } from 'vue';
 
 export const useAuthStore = defineStore('Auth', () => {
-    //是否已登录
-    const isLogin = ref(true);
     //用户对象
     //用户类型（0：管理员、1：品牌商、2：借卖方）
-    const type = ref(1);
+    const type = ref(null);
     //用户id
-    const user_id = ref();
+    const user_id = ref(null);
     //用户名称
-    const name = ref('用户名');
+    const name = ref(null);
     //品牌商（店铺）id
-    const mvo_id = ref();
+    const mvo_id = ref(null);
     //借卖方（店铺）id
-    const bvo_id = ref();
+    const bvo_id = ref(null);
 
-    const description = ref('用户描述信息');
+    const description = ref(null);
 
-    const avatar_url = ref('https://www.neusoft.com/cn/upload/img/logo.svg');
+    const avatar_url = ref(null);
 
     function editInfo(data) {
         console.log(data);
@@ -27,9 +25,16 @@ export const useAuthStore = defineStore('Auth', () => {
         avatar_url.value = data.avatar_url;
     }
 
-    function setIsLogin(isLogin) {
-        this.isLogin = isLogin;
+    function setInfo(data) {
+        console.log(data);
+        user_id.value = data.user_id;
+        type.value = data.type;
+        name.value = data.name;
+        description.value = data.description;
+        avatar_url.value = data.avatar_url;
+        mvo_id.value = data.mvo_id;
+        bvo_id.value = data.bvo_id;
     }
 
-    return { isLogin, type, user_id, name, mvo_id, bvo_id, description, avatar_url, editInfo, setIsLogin };
+    return {type, user_id, name, mvo_id, bvo_id, description, avatar_url, editInfo, setInfo };
 });

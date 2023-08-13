@@ -20,7 +20,7 @@ const lineData = reactive({
         },
         {
             label: '2023',
-            data: [28, 48, 40, 72],
+            data: [28, 48, 40, 45],
             fill: false,
             backgroundColor: '#00bb7e',
             borderColor: '#00bb7e',
@@ -41,7 +41,7 @@ onMounted(() => {
 });
 
 const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    return value.toLocaleString('zh', { style: 'currency', currency: 'CNY' });
 };
 
 

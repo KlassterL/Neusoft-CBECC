@@ -42,7 +42,7 @@ const confirmOrder = (data) => {
 }
 
 const submitOrder = () => {
-    if(bvoAPI.submitOrder(authStore.bvo_id, cartProduct.value.product_id, cartProduct.value.amount)) {
+    if (bvoAPI.submitOrder(authStore.bvo_id, cartProduct.value.product_id, cartProduct.value.amount)) {
         bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id);
         cart.value = cart.value.filter(e => e.product_id !== cartProduct.value.product_id);
         toast.success('下单成功', '已提交 ' + cartProduct.value.name + ' 的订单');
@@ -87,10 +87,9 @@ const initFilters = () => {
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <DataTable editMode="cell" @cell-edit-complete="onCellEditComplete" :value="cart"
-                    v-model:selection="selectedProducts" dataKey="product_id" :paginator="true" :rows="10"
-                    :filters="filters" :rowsPerPageOptions="[5, 10, 25]" currentPageReportTemplate=""
-                    responsiveLayout="scroll">
+                <DataTable editMode="cell" :value="cart" v-model:selection="selectedProducts" dataKey="product_id"
+                    :paginator="true" :rows="10" :filters="filters" :rowsPerPageOptions="[5, 10, 25]"
+                    currentPageReportTemplate="" responsiveLayout="scroll">
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h3 class="m-0">购物车</h3>
