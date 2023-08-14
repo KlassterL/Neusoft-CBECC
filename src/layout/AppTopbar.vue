@@ -103,7 +103,7 @@ const isOutsideClicked = (event) => {
             <button @click="topBarMenu" class="layout-topbar-button border-2 border-primary"
                 style="width: 4rem; height: 4rem;" aria-haspopup="true" aria-controls="topbar_menu">
                 <i v-if="!authStore.avatar_url" class="pi pi-user"></i>
-                <img v-if="authStore.avatar_url" :src="authStore.avatar_url">
+                <img v-if="authStore.avatar_url" :src="authStore.avatar_url" style="width: 4rem; height: 4rem; border-radius:50%">
             </button>
             <Menu ref="topbar_menu" id="topbar_menu" :model="items" :popup="true" class="w-7rem" />
         </div>
