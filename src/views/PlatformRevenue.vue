@@ -1,19 +1,19 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
-import { useAuthStore } from '@/stores/Auth';
 import userAPI from '@/api/user';
 import { format } from 'date-fns';
 
-const authStore = useAuthStore();
 const balanceRecord = ref([]);
-
 const lineData = reactive({});
-
 const lineOptions = ref(null);
+const loading = ref(true);
 
 onMounted(() => {
-    balanceRecord.value = userAPI.findAllBalanceRecord();
-    initLineData();
+    userAPI.findAllBalanceRecord().then(data => {
+        balanceRecord.value = data;
+        loading.value = false;
+        initLineData();
+    })
 });
 
 function initLineData() {
@@ -50,7 +50,7 @@ const formatCurrency = (value) => {
         <div class="col-12">
             <div class="card">
                 <h5>平台金额流量</h5>
-                <DataTable :value="balanceRecord" :rows="5" :paginator="true" responsiveLayout="scroll">
+                <DataTable :value="balanceRecord" :rows="5" :paginator="true" responsiveLayout="scroll" :loading="loading">
                     <Column field="user_id" header="用户id" :sortable="true" style="width: 25%">
                         <template #body="slotProps">
                             {{ slotProps.data.user_id }}
@@ -61,7 +61,12 @@ const formatCurrency = (value) => {
                             {{ format(slotProps.data.date, 'yyyy-MM-dd HH:mm:ss') }}
                         </template>
                     </Column>
-                    <Column field="balance" header="余额" style="width: 50%;">
+                    <Column field="old_balance" header="旧余额" style="width: 25%;">
+                        <template #body="slotProps">
+                            {{ formatCurrency(slotProps.data.old_balance) }}
+                        </template>
+                    </Column>
+                    <Column field="balance" header="新余额" style="width: 25%;">
                         <template #body="slotProps">
                             {{ formatCurrency(slotProps.data.balance) }}
                         </template>

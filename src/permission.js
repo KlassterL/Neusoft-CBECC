@@ -10,6 +10,7 @@ router.beforeEach(async (to, from, next) => {
     if (whiteList.includes(to.path)) {
         return next();
     }
+    next();
     const isLogin = localStorage.getItem('isLogin');
     const authStore = useAuthStore();
     if (isLogin) {

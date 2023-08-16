@@ -5,13 +5,13 @@ import authAPI from '@/api/auth';
 import toast from '@/util/toast';
 
 const submitted = ref(false);
-const user_id = ref('');
-const password1 = ref('');
-const password2 = ref('');
-const type = ref('');
-const name = ref('');
-const description = ref('');
-const avatar_url = ref('');
+const user_id = ref();
+const password1 = ref();
+const password2 = ref();
+const type = ref();
+const name = ref();
+const description = ref();
+const avatar_url = ref();
 
 function validateRegister() {
     submitted.value = true;
@@ -21,13 +21,16 @@ function validateRegister() {
 }
 
 function register() {
-    if (authAPI.register(user_id.value, password1.value, type.value, name.value, description.value, avatar_url.value)) {
-        toast.success('注册成功', '请前往登录页面进行登录');
-        router.push({ path: '/login' });
-    }
-    else {
-        toast.error('注册失败', '请检查输入内容是否正确');
-    }
+    authAPI.register(user_id.value, password1.value, type.value, name.value, description.value, avatar_url.value).then(res => {
+        if(res) {
+            toast.success('注册成功', '请前往登录页面进行登录');
+            router.push({ path: '/login' });
+        }
+        else {
+            toast.error('注册失败', '请检查输入内容是否正确');
+
+        }
+    })
 }
 
 </script>

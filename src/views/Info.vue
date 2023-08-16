@@ -13,13 +13,16 @@ onMounted(() => {
 });
 
 const editInfo = () => {
-    if(userAPI.editInfo(authStore.user_id, info.value)) {
-        toast.success('更新成功','已更新账号信息');
-        authStore.editInfo(info.value);
-    }
-    else {
-        toast.error('更新失败','请稍后重试...');
-    }
+    userAPI.editInfo(authStore.user_id, info.value).then(res => {
+        if (res) {
+            toast.success('更新成功', '已更新账号信息');
+            authStore.editInfo(info.value);
+        }
+        else {
+            toast.error('更新失败', '请稍后重试...');
+        }
+    })
+
 }
 
 let icon = computed(() => {
@@ -54,12 +57,12 @@ let icon = computed(() => {
 </template>
 
 <style>
-.p-avatar.p-avatar-circle  {
+.p-avatar.p-avatar-circle {
     width: 10rem;
     height: 10rem;
 }
 
-.p-avatar.p-avatar-circle  .p-avatar-icon {
+.p-avatar.p-avatar-circle .p-avatar-icon {
     font-size: 5rem;
 }
 </style>

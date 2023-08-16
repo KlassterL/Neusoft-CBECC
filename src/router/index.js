@@ -17,14 +17,20 @@ const router = createRouter({
                 {
                     path: '/manageproduct',
                     name: 'manageproduct',
-                    meta: {roles:[1]},
+                    meta: {roles:[0,1]},
                     component: () => import('@/views/ManageProduct.vue')
                 },
                 {
                     path: '/manageorder',
                     name: 'manageorder',
-                    meta: {roles:[1,2]},
+                    meta: {roles:[0,1,2]},
                     component: () => import('@/views/ManageOrder.vue')
+                },
+                {
+                    path: '/manageuser',
+                    name: 'manageuser',
+                    meta: {roles:[0]},
+                    component: () => import('@/views/ManageUser.vue')
                 },
                 {
                     path: '/browseproduct',

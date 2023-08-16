@@ -4,7 +4,7 @@ import { ref } from 'vue';
 export const useAuthStore = defineStore('Auth', () => {
     //用户对象
     //用户类型（0：管理员、1：品牌商、2：借卖方）
-    const type = ref(null);
+    const type = ref(2);
     //用户id
     const user_id = ref(null);
     //用户名称

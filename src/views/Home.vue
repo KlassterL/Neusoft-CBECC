@@ -33,10 +33,14 @@ const lineOptions = ref(null);
 
 onMounted(() => {
     if(authStore.type === 1) {
-        products.value = mvoAPI.findAllBrandProduct(authStore.mvo_id);
+        mvoAPI.findAllBrandProduct(authStore.mvo_id).then(data => {
+            products.value = data;
+        })
     }
     else {
-        products.value = bvoAPI.findAllProduct();
+        bvoAPI.findAllProduct().then(data => {
+            products.value = data;
+        })
     }
 });
 

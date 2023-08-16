@@ -221,6 +221,8 @@ const admin = ref([
     {
         label: '业务',
         items: [
+            { label: '订单管理', icon: 'pi pi-server', to: '/manageorder' },
+            { label: '用户管理', icon: 'pi pi-users', to: '/manageuser' },
             { label: '借卖商城', icon: 'pi pi-cart-plus', to: '/browseproduct' },
             { label: '平台营收', icon: 'pi pi-chart-line', to: '/revenue'  }
         ]

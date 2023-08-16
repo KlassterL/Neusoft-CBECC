@@ -14,13 +14,17 @@ const deleteProductsDialog = ref(false);
 const cartProduct = ref({});
 const selectedProducts = ref(null);
 const filters = ref({});
+const loading = ref(true);
 
 onBeforeMount(() => {
     initFilters();
 });
 
 onMounted(() => {
-    cart.value = bvoAPI.getFromCart(authStore.bvo_id);
+    bvoAPI.getFromCart(authStore.bvo_id).then(data => {
+
+        cart.value = data;
+    })
 });
 
 const formatCurrency = (value) => {
@@ -42,28 +46,34 @@ const confirmOrder = (data) => {
 }
 
 const submitOrder = () => {
-    if (bvoAPI.submitOrder(authStore.bvo_id, cartProduct.value.product_id, cartProduct.value.amount)) {
-        bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id);
-        cart.value = cart.value.filter(e => e.product_id !== cartProduct.value.product_id);
-        toast.success('下单成功', '已提交 ' + cartProduct.value.name + ' 的订单');
-    }
-    else {
-        toast.error('下单失败', '请稍后重试...');
-    }
-    submitOrderDialog.value = false;
-    cartProduct.value = {};
+    bvoAPI.submitOrder(authStore.bvo_id, cartProduct.value.product_id, cartProduct.value.amount).then(res => {
+        if (res) {
+            bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id);
+            cart.value = cart.value.filter(e => e.product_id !== cartProduct.value.product_id);
+            toast.success('下单成功', '已提交 ' + cartProduct.value.name + ' 的订单');
+        }
+        else {
+            toast.error('下单失败', '请稍后重试...');
+        }
+        submitOrderDialog.value = false;
+        cartProduct.value = {};
+    })
+
 }
 
 const deleteProduct = () => {
-    if (bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id)) {
-        cart.value = cart.value.filter((val) => val.product_id !== cartProduct.value.product_id);
-        toast.success('移除成功', '已将 ' + cartProduct.value.name + ' 从购物车移出');
-    }
-    else {
-        toast.error('移除失败', '请稍后重试...');
-    }
-    deleteProductDialog.value = false;
-    cartProduct.value = {};
+    bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id).then(res => {
+        if (res) {
+            cart.value = cart.value.filter((val) => val.product_id !== cartProduct.value.product_id);
+            toast.success('移除成功', '已将 ' + cartProduct.value.name + ' 从购物车移出');
+        }
+        else {
+            toast.error('移除失败', '请稍后重试...');
+        }
+        deleteProductDialog.value = false;
+        cartProduct.value = {};
+    })
+
 };
 
 const deleteSelectedProducts = () => {
@@ -87,7 +97,7 @@ const initFilters = () => {
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <DataTable editMode="cell" :value="cart" v-model:selection="selectedProducts" dataKey="product_id"
+                <DataTable editMode="cell" :value="cart" v-model:selection="selectedProducts" dataKey="product_id" :loading="loading"
                     :paginator="true" :rows="10" :filters="filters" :rowsPerPageOptions="[5, 10, 25]"
                     currentPageReportTemplate="" responsiveLayout="scroll">
                     <template #header>
