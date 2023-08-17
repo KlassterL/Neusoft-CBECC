@@ -26,11 +26,13 @@ onMounted(() => {
     if (authStore.type === 0) {
         adminAPI.findAllProduct().then(data => {
             products.value = data;
+            loading.value = false;
         })
     }
     else {
         mvoAPI.findAllBrandProduct(authStore.mvo_id).then(data => {
             products.value = data;
+            loading.value = false;
         })
     }
 });

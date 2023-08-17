@@ -51,12 +51,12 @@ const formatCurrency = (value) => {
     return value.toLocaleString('zh', { style: 'currency', currency: 'CNY' });
 };
 
-let isWithdraw = false;
+const isWithdraw = ref(false);
 
 function withdraw() {
-    if (!isWithdraw) {
+    if (!isWithdraw.value) {
         toast.success('申请成功', '已申请提现余额');
-        isWithdraw = true;
+        isWithdraw.value = true;
     }
     else {
         toast.error('操作失败', '已申请提现余额，请勿重复申请');

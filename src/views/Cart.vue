@@ -22,8 +22,8 @@ onBeforeMount(() => {
 
 onMounted(() => {
     bvoAPI.getFromCart(authStore.bvo_id).then(data => {
-
         cart.value = data;
+        loading.value = false;
     })
 });
 

@@ -4,7 +4,7 @@ import { ref } from 'vue';
 export const useAuthStore = defineStore('Auth', () => {
     //用户对象
     //用户类型（0：管理员、1：品牌商、2：借卖方）
-    const type = ref(2);
+    const type = ref(null);
     //用户id
     const user_id = ref(null);
     //用户名称
@@ -19,14 +19,14 @@ export const useAuthStore = defineStore('Auth', () => {
     const avatar_url = ref(null);
 
     function editInfo(data) {
-        console.log(data);
+        // console.log(data);
         name.value = data.name;
         description.value = data.description;
         avatar_url.value = data.avatar_url;
     }
 
     function setInfo(data) {
-        console.log(data);
+        // console.log(data);
         user_id.value = data.user_id;
         type.value = data.type;
         name.value = data.name;
