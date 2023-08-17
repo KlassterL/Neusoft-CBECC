@@ -7,7 +7,7 @@
                     <h3>品牌商用户</h3>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search" />
-                        <InputText v-model="filters['global'].value" placeholder="搜索品牌商" />
+                        <InputText v-model="filters1['global'].value" placeholder="搜索品牌商" />
                     </span>
                 </div>
             </template>
@@ -48,7 +48,7 @@
                     <h3>借卖方用户</h3>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search" />
-                        <InputText v-model="filters['global'].value" placeholder="搜索借卖方" />
+                        <InputText v-model="filters2['global'].value" placeholder="搜索借卖方" />
                     </span>
                 </div>
             </template>
