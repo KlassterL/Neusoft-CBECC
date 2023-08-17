@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <DataTable v-model:filters="filters" :value="mvos" paginator :rows="5" dataKey="user_id"
+        <DataTable v-model:filters="filters1" :value="mvos" paginator :rows="5" dataKey="user_id"
                 filterDisplay="menu" :loading="loading1" :globalFilterFields="['name']">
             <template #header>
                 <div class="flex justify-content-between">
@@ -41,7 +41,7 @@
     <div class="card">
         
         
-        <DataTable v-model:filters="filters" :value="bvos" paginator :rows="5" dataKey="user_id"
+        <DataTable v-model:filters="filters2" :value="bvos" paginator :rows="5" dataKey="user_id"
                 filterDisplay="menu" :loading="loading2" :globalFilterFields="['name']">
             <template #header>
                 <div class="flex justify-content-between">
@@ -89,7 +89,8 @@ import adminAPI from '@/api/admin';
 const mvos = ref();
 const bvos = ref();
 
-const filters = ref();
+const filters1 = ref();
+const filters2 = ref();
 const loading1 = ref(true);
 const loading2 = ref(true);
 
@@ -106,7 +107,10 @@ onMounted(() => {
 
 
 const initFilters = () => {
-    filters.value = {
+    filters1.value = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    };
+    filters2.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     };
 };
