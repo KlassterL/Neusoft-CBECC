@@ -15,8 +15,11 @@ router.beforeEach(async (to, from, next) => {
     if (isLogin) {
         if(authStore.user_id === null) {
             const user_id = localStorage.getItem('user_id');
-            authStore.setInfo(userAPI.findInfo(user_id));
+            userAPI.findInfo(user_id).then(data => {
+                authStore.setInfo(data);
+            })
         }
+        console.log(authStore);
         // 检查有无访问权限
         const hasPermission = (to.meta.roles && to.meta.roles.includes(authStore.type));
         if (hasPermission) {

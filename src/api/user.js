@@ -4,8 +4,8 @@ import request from "@/util/request";
 function checkBalance(user_id) {
     //return number
     return request({
-        url: 'checkBalance',
-        method: 'get',
+        url: '/checkBalance',
+        method: 'post',
         data: {
             user_id
         }
@@ -17,8 +17,8 @@ function findInfo(user_id) {
     //返回对象：
     // return {user_id, name, description, avatar_url, type, admin_id/mvo_id/bvo_id}
     return request({
-        url: 'findInfo',
-        method: 'get',
+        url: '/findInfo',
+        method: 'post',
         data: {
             user_id
         }
@@ -30,14 +30,22 @@ function editInfo(user_id, data) {
     data.user_id = user_id;
     //return bool
     return request({
-        url: 'editInfo',
-        method: 'get',
+        url: '/editInfo',
+        method: 'post',
         data
     });
 }
 
 //修改账号密码
 function editPassword(user_id, password) {
+    return request({
+        url:'/editPassword',
+        method:'post',
+        data:{
+            user_id,
+            password
+        }
+    })
     //return bool
 }
 
@@ -45,7 +53,7 @@ function editPassword(user_id, password) {
 function findAllBalanceRecord() {
     //return [{user_id, date, old_balance, balance}]
     return request({
-        url: 'findAllBalanceRecord',
+        url: '/findAllBalanceRecord',
         method: 'get',
     });
 }
@@ -54,8 +62,8 @@ function findAllBalanceRecord() {
 function findUserBalanceRecord(user_id) {
     //return [{date,old_balance, balance}]
     return request({
-        url: 'findUserBalanceRecord',
-        method: 'get',
+        url: '/findUserBalanceRecord',
+        method: 'post',
         data: {
             user_id
         }

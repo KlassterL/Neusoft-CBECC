@@ -12,8 +12,8 @@ import request from "@/util/request"
 function findAllBVOOrder(bvo_id) {
     //return [{order_id, name, price, amount, image_url, status, time}]
     return request({
-        url: 'findAllBVOOrder',
-        method: 'get',
+        url: '/findAllBVOOrder',
+        method: 'post',
         data: {
             bvo_id
         }
@@ -25,8 +25,8 @@ function findAllBVOOrder(bvo_id) {
 function findAllMVOOrder(mvo_id) {
     //return [{order_id, name, price, amount, image_url, status, time}]
     return request({
-        url: 'findAllMVOOrder',
-        method: 'get',
+        url: '/findAllMVOOrder',
+        method: 'post',
         data: {
             mvo_id
         }
@@ -37,8 +37,8 @@ function findAllMVOOrder(mvo_id) {
 function findAllOrders() {
     //return [{order_id, name, price, amount, image_url, status, time}]
     return request({
-        url: 'findAllOrders',
-        method: 'get'
+        url: '/findAllOrders',
+        method: 'post'
     });
 }
 
@@ -46,7 +46,7 @@ function findAllOrders() {
 function submitOrder(bvo_id, product_id, amount) {
     //return bool
     return request({
-        url: 'submitOrder',
+        url: '/submitOrder',
         method: 'post',
         data: {
             bvo_id,
@@ -60,7 +60,7 @@ function submitOrder(bvo_id, product_id, amount) {
 function startOrder(order_id) {
     //return bool
     return request({
-        url: 'startOrder',
+        url: '/startOrder',
         method: 'post',
         data: {
             order_id
@@ -72,7 +72,7 @@ function startOrder(order_id) {
 function finishOrder(order_id) {
     //return bool
     return request({
-        url: 'finishOrder',
+        url: '/finishOrder',
         method: 'post',
         data: {
             order_id
@@ -84,7 +84,7 @@ function finishOrder(order_id) {
 function cancelOrder(order_id) {
     //return bool
     return request({
-        url: 'cancelOrder',
+        url: '/cancelOrder',
         method: 'post',
         data: {
             order_id

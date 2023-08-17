@@ -39,8 +39,6 @@
         </DataTable>
     </div>
     <div class="card">
-        
-        
         <DataTable v-model:filters="filters2" :value="bvos" paginator :rows="5" dataKey="user_id"
                 filterDisplay="menu" :loading="loading2" :globalFilterFields="['name']">
             <template #header>
@@ -97,11 +95,11 @@ const loading2 = ref(true);
 onMounted(() => {
     adminAPI.findAllMVO().then(data => {
         mvos.value = data;
-        loading1 = false;
+        loading1.value = false;
     })
     adminAPI.findAllMVO().then(data => {
         bvos.value = data;
-        loading = false;
+        loading2.value = false;
     })
 });
 

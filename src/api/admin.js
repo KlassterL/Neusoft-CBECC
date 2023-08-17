@@ -8,8 +8,8 @@ import product from './product';
 function findAllMVO() {
     //return [{user_id,mvo_id,name,balance,avatar_url}]
     return request({
-        url: 'findAllMVO',
-        method: 'get'
+        url: '/findAllMVO',
+        method: 'post'
     })
 }
 
@@ -17,8 +17,8 @@ function findAllMVO() {
 function findAllBVO() {
 //return [{user_id,bvo_id,name,balance,avatar_url}]
     return request({
-        url: 'findAllBVO',
-        method: 'get'
+        url: '/findAllBVO',
+        method: 'post'
     })
 }
 
