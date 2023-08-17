@@ -14,7 +14,7 @@ function addProduct(data) {
     data.rating = Math.floor(Math.random()*(4))+2;
     //return 新商品的自动生成id
     return request({
-        url: 'addProduct',
+        url: '/addProduct',
         method: 'post',
         data
     });
@@ -25,7 +25,7 @@ function addProduct(data) {
 function deleteProduct(product_id) {
     //return bool;
     return request({
-        url: 'deleteProduct',
+        url: '/deleteProduct',
         method: 'post',
         data: {
             product_id
@@ -38,7 +38,7 @@ function editProduct(product_id, data) {
     //return bool;
     data.product_id = product_id;
     return request({
-        url: 'editProduct',
+        url: '/editProduct',
         method: 'post',
         data
     });
@@ -49,8 +49,8 @@ function findAllBrandProduct(mvo_id) {
     //只查找mvo的valid为ture的商品
     //return [{product_id, name, mvo_id, price, description, category, image_url, stock, rating}];
     return request({
-        url: 'findAllBrandProduct',
-        method: 'get',
+        url: '/findAllBrandProduct',
+        method: 'post',
         data: {
             mvo_id
         }
@@ -62,7 +62,7 @@ function findAllProduct() {
     //只查找valid为ture的商品
     //return [{product_id, name, mvo_id, price, description, category, image_url, stock, rating}];
     return request({
-        url: 'findAllProduct',
+        url: '/findAllProduct',
         method: 'get'
     });
 }

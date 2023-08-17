@@ -15,7 +15,7 @@ const lineOptions = ref(null);
 
 onMounted(() => {
     userAPI.checkBalance(authStore.user_id).then(data => {
-        balance.value = formatCurrency(data);
+        balance.value = formatCurrency(data.balance);
     });
     userAPI.findUserBalanceRecord(authStore.user_id).then(data => {
         balanceRecord.value = data;

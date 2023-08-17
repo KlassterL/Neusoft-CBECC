@@ -28,7 +28,8 @@ function register(user_id, password, type, name, avatar_url) {
             password,
             type,
             name,
-            avatar_url
+            avatar_url,
+            balance: 5000
         }
     });
 }

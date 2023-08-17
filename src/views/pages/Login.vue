@@ -20,17 +20,23 @@ function validateLogin() {
 }
 
 function login() {
-    if (authAPI.login(user_id.value, password.value)) {
-        localStorage.setItem('user_id', user_id.value);
-        localStorage.setItem('isLogin', true);
-        authStore.setInfo(userAPI.findInfo(user_id.value));
-        const { name } = authStore;
-        toast.success('登录成功', '欢迎回来 ' + name + ' ~');
-        router.push({ path: '/' });
-    }
-    else {
-        toast.error('登录失败', '请检查账号密码是否正确');
-    }
+    authAPI.login(user_id.value, password.value).then(res => {
+        if (res) {
+            localStorage.setItem('user_id', user_id.value);
+            localStorage.setItem('isLogin', true);
+            console.log('test',user_id.value)
+            userAPI.findInfo(user_id.value).then(data => {
+                authStore.setInfo(data);
+                const { name } = authStore;
+                toast.success('登录成功', '欢迎回来 ' + name + ' ~');
+                router.push({ path: '/' });
+            })
+        }
+        else {
+            toast.error('登录失败', '请检查账号密码是否正确');
+        }
+    })
+
 }
 
 </script>

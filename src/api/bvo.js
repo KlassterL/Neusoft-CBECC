@@ -55,8 +55,8 @@ function getFromCart(bvo_id) {
     //附带数量amount
     //return [{mvo_id, amount, product_id, name, price, description, category, image_url, stock, rating}]
     return request({
-        url: 'getFromCart',
-        method: 'get',
+        url: '/getFromCart',
+        method: 'post',
         data: {
             bvo_id
         }
@@ -73,7 +73,7 @@ function getFromCart(bvo_id) {
 function addToCart(bvo_id, product_id, amount) {
     //return bool
     return request({
-        url: 'addToCart',
+        url: '/addToCart',
         method: 'post',
         data: {
             bvo_id,
@@ -87,7 +87,7 @@ function addToCart(bvo_id, product_id, amount) {
 function deleteFromCart(bvo_id, product_id) {
     //return bool
     return request({
-        url: 'deleteFromCart',
+        url: '/deleteFromCart',
         method: 'post',
         data: {
             bvo_id,
@@ -100,7 +100,7 @@ function deleteFromCart(bvo_id, product_id) {
 function editInCart(bvo_id, product_id, amount) {
     //return bool
     return request({
-        url: 'editInCart',
+        url: '/editInCart',
         method: 'post',
         data: {
             bvo_id,
