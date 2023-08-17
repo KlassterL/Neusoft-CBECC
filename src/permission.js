@@ -15,11 +15,11 @@ router.beforeEach(async (to, from, next) => {
     if (isLogin) {
         if(authStore.user_id === null) {
             const user_id = localStorage.getItem('user_id');
-            userAPI.findInfo(user_id).then(data => {
-                authStore.setInfo(data);
-            })
+            //同步操作：等待数据返回
+            let data = await userAPI.findInfo(user_id);
+            authStore.setInfo(data);
         }
-        console.log(authStore);
+        //console.log(authStore);
         // 检查有无访问权限
         const hasPermission = (to.meta.roles && to.meta.roles.includes(authStore.type));
         if (hasPermission) {
