@@ -51,21 +51,25 @@ const submitOrder = () => {
             bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id);
             cart.value = cart.value.filter(e => e.product_id !== cartProduct.value.product_id);
             toast.success('下单成功', '已提交 ' + cartProduct.value.name + ' 的订单');
+            cartProduct.value = {};
         }
         else {
             toast.error('下单失败', '请稍后重试...');
+            cartProduct.value = {};
         }
         submitOrderDialog.value = false;
-        cartProduct.value = {};
     })
 
 }
 
-const deleteProduct = () => {
-    bvoAPI.deleteFromCart(authStore.bvo_id, cartProduct.value.product_id).then(res => {
+const deleteProduct = (delProduct) => {
+    if(!delProduct) {
+        delProduct = cartProduct.value;
+    }
+    bvoAPI.deleteFromCart(authStore.bvo_id, delProduct.product_id).then(res => {
         if (res) {
-            cart.value = cart.value.filter((val) => val.product_id !== cartProduct.value.product_id);
-            toast.success('移除成功', '已将 ' + cartProduct.value.name + ' 从购物车移出');
+            cart.value = cart.value.filter((val) => val.product_id !== delProduct.product_id);
+            toast.success('移除成功', '已将 ' + delProduct.name + ' 从购物车移出');
         }
         else {
             toast.error('移除失败', '请稍后重试...');
@@ -78,8 +82,7 @@ const deleteProduct = () => {
 
 const deleteSelectedProducts = () => {
     selectedProducts.value.forEach(e => {
-        cartProduct.value = e;
-        deleteProduct();
+        deleteProduct(e);
     })
     deleteProductsDialog.value = false;
     selectedProducts.value = null;

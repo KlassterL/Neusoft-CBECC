@@ -32,6 +32,7 @@ onBeforeMount(() => {
     else {
         bvoAPI.findAllBVOOrder(authStore.bvo_id).then(data => {
             orders.value = data;
+            console.log(orders.value);
             loading.value = false;
         })
     }
@@ -131,7 +132,7 @@ const cancelOrder = (data) => {
                     </Column>
                     <Column field="time" header="时间" style="max-width: 7rem">
                         <template #body="{ data }">
-                            <div class="text-center">{{ format(data.time, 'yyyy-MM-dd HH:mm:ss') }}</div>
+                            <div class="text-center">{{ format(new Date(data.time), 'yyyy-MM-dd HH:mm:ss') }}</div>
                         </template>
                     </Column>
                     <Column field="name" header="订购商品" style="min-width: 10rem">

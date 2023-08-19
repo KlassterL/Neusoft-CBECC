@@ -60,6 +60,7 @@ const saveProduct = () => {
                 if (res) {
                     products.value[findIndexById(product.value.product_id)] = product.value;
                     toast.success('保存成功', '商品信息已更新');
+                    product.value = {};
                 }
                 else {
                     toast.error('保存失败', '请稍后重试...');
@@ -69,10 +70,12 @@ const saveProduct = () => {
         } else {
             product.value.mvo_id = authStore.mvo_id;
             mvoAPI.addProduct(product.value).then(product_id => {
+                console.log(product_id);
                 if (product_id.length > 0) {
                     product.value.product_id = product_id;
                     products.value.push(product.value);
                     toast.success('添加成功', '已添加新的商品信息');
+                    product.value = {};
                 }
                 else {
                     toast.error('添加失败', '请稍后重试...');
@@ -81,7 +84,6 @@ const saveProduct = () => {
 
         }
         productDialog.value = false;
-        product.value = {};
     }
 };
 
@@ -95,18 +97,21 @@ const confirmDeleteProduct = (editProduct) => {
     deleteProductDialog.value = true;
 };
 
-const deleteProduct = () => {
-    mvoAPI.deleteProduct(product.value.product_id).then(res => {
+const deleteProduct = (delProduct) => {
+    if(!delProduct) {
+        delProduct = product.value;
+    }
+    mvoAPI.deleteProduct(delProduct.product_id).then(res => {
         if (res) {
-            products.value = products.value.filter((val) => val.product_id !== product.value.product_id);
-            toast.success('删除成功', '已成功删除 ' + product.value.name + ' 的商品信息');
+            products.value = products.value.filter((val) => val.product_id !== delProduct.product_id);
+            toast.success('删除成功', '已成功删除 ' + delProduct.name + ' 的商品信息');
+            product.value = {};
         }
         else {
             toast.error('删除失败', '请稍后重试...');
 
         }
         deleteProductDialog.value = false;
-        product.value = {};
     })
 
 };
@@ -127,8 +132,7 @@ const confirmDeleteSelected = () => {
 };
 const deleteSelectedProducts = () => {
     selectedProducts.value.forEach(e => {
-        product.value = e;
-        deleteProduct();
+        deleteProduct(e);
     })
     deleteProductsDialog.value = false;
     selectedProducts.value = null;
@@ -261,7 +265,7 @@ const initFilters = () => {
                     <template #footer>
                         <Button label="取消" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false" />
                         <Button label="删除" icon="pi pi-check" class="p-button-text" severity="danger"
-                            @click="deleteProduct" />
+                            @click="deleteProduct(null)" />
                     </template>
                 </Dialog>
 
