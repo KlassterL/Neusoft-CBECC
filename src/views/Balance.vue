@@ -18,6 +18,9 @@ onMounted(() => {
         balance.value = formatCurrency(data.balance);
     });
     userAPI.findUserBalanceRecord(authStore.user_id).then(data => {
+        data.forEach(e => {
+            e.date = new Date(e.time);
+        })
         balanceRecord.value = data;
         loading.value = false;
         initLineData();
@@ -86,7 +89,12 @@ function withdraw() {
                             {{ format(slotProps.data.date, 'yyyy-MM-dd HH:mm:ss') }}
                         </template>
                     </Column>
-                    <Column field="balance" header="余额" style="width: 50%;">
+                    <Column field="old_balance" header="旧余额" style="width: 20%;">
+                        <template #body="slotProps">
+                            {{ formatCurrency(slotProps.data.old_balance) }}
+                        </template>
+                    </Column>
+                    <Column field="balance" header="新余额" style="width: 20%;">
                         <template #body="slotProps">
                             {{ formatCurrency(slotProps.data.balance) }}
                         </template>

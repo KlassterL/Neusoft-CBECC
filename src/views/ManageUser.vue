@@ -97,7 +97,7 @@ onMounted(() => {
         mvos.value = data;
         loading1.value = false;
     })
-    adminAPI.findAllMVO().then(data => {
+    adminAPI.findAllBVO().then(data => {
         bvos.value = data;
         loading2.value = false;
     })

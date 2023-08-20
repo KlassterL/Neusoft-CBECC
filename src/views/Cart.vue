@@ -184,7 +184,7 @@ const initFilters = () => {
                     <template #footer>
                         <Button label="取消" icon="pi pi-times" class="p-button-text" @click="deleteProductDialog = false" />
                         <Button label="删除" icon="pi pi-check" class="p-button-text" severity="danger"
-                            @click="deleteProduct" />
+                            @click="deleteProduct(null)" />
                     </template>
                 </Dialog>
 
