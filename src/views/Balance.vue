@@ -75,10 +75,10 @@ function withdraw() {
                 <h5>账户余额</h5>
                 <div class="flex justify-content-center flex-column align-items-center">
                     <h1 class="-ml-5 text-orange-500">{{ balance }}</h1>
-                    <div class="flex justify-content-between align-content-between w-10rem">
+                    <!-- <div class="flex justify-content-between align-content-between w-10rem">
                         <Button label="提现" :disabled="isWithdraw" @click="withdraw"></Button>
                         <Button label="充值" :disabled="authStore.type === 1"></Button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card">
